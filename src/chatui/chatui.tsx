@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { IoSend, IoBulb } from "react-icons/io5";
 import DifferentPrompts from './different_prompts';
 
-export default function ChatUI() {
-  const [input, setInput] = useState("");
+export default function ChatUI({ onSubmit }: { onSubmit: (prompt: string) => void }) {
+  const [prompt, setPrompt] = useState("");
   const [focused, setFocused] = useState(false);
 
   const web3Prompts = [
@@ -21,16 +21,9 @@ export default function ChatUI() {
     "Build a crypto donation tracker for NGOs.",
   ];
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    console.log("Submitted:", input);
-    setInput("");
-    setFocused(false);
-  };
-
   const handleRandomPrompt = () => {
     const random = web3Prompts[Math.floor(Math.random() * web3Prompts.length)];
-    setInput(random);
+    setPrompt(random);
     setFocused(true);
   };
 
@@ -38,26 +31,26 @@ export default function ChatUI() {
     <div className="flex flex-col md:flex-row gap-2 w-full">
     <div
       className={`relative w-full md:w-[700px] lg:w-[800px] transition-all duration-300
-        ${focused || input ? "h-[155px] md:h-[170px] lg:h-[170px]" : "h-[72px]"} 
+        ${focused || prompt ? "h-[155px] md:h-[170px] lg:h-[170px]" : "h-[72px]"} 
         bg-blue-50 bg-opacity-75 rounded-lg p-4 md:p-6 flex flex-col justify-between shadow-md`}
     >
       <div className={`flex w-full items-center gap-3 ${!focused ? "flex-1" : ""}`}>
 
-        {!focused && input === "" && (
+        {!focused && prompt === "" && (
             <div className="absolute top-0 pl-2 pr-2 w-full h-full text-gray-400 text-sm sm:text-base md:text-lg lg:text-xl pointer-events-none flex items-center">
                 <DifferentPrompts />
             </div>
         )}
 
         <textarea
-          value={input}
-          placeholder={focused ? 'Describe your Web3 App' : ""}
+          value={prompt}
+          placeholder={focused ? 'Describe your Web3 App...' : ""}
           onFocus={() => setFocused(true)}
           onBlur={() => {
-            if (!input.trim()) setFocused(false);
+            if (!prompt.trim()) setFocused(false);
           }}
-          onChange={(e) => setInput(e.target.value)}
-          rows={1}
+          onChange={(e) => setPrompt(e.target.value)}
+          rows={focused ? 3 : 1}
           className="bg-transparent resize-none w-full h-full outline-none text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed"
         />
       </div>
@@ -81,7 +74,7 @@ export default function ChatUI() {
         )}
         {focused && (
         <button
-          onClick={handleSend}
+          onClick={() => onSubmit(prompt)}
           className="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center text-white text-xl transition"
         >
           <IoSend />

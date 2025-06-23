@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ChatUI from "./components/chatui/chatui";
+import ChatUI from "../chatui/chatui";
 import { SiLinkedin, SiGithub } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
 
@@ -18,7 +18,7 @@ export default function Home() {
         <h2 className="text-xl md:text-3xl font-bold text-gray-800 text-center">
           Launch a Web3 App in <span className="italic">minutes</span>.
         </h2>
-        <ChatUI />
+        
       </main>
 
       <div className="mt-10 flex gap-6 flex-wrap items-center justify-center text-gray-800 text-3xl">
