@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
 import Image from "next/image";
-import ChatUI from "@/chatui/chatui";
+import ChatUI from "@/components/ChatUI";
 import { SiLinkedin, SiGithub } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
 

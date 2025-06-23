@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { IoSend, IoBulb } from "react-icons/io5";
-import DifferentPrompts from './different_prompts';
+import DifferentPrompts from './DifferentPrompts';
 
 export default function ChatUI({ onSubmit }: { onSubmit: (prompt: string) => void }) {
   const [prompt, setPrompt] = useState("");
