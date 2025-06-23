@@ -15,19 +15,6 @@ contract SimpleToken {
     balances[msg.sender] += 100;
   }
 }`,
-    "frontend.jsx": `
-import { useState } from "react";
-
-export default function App() {
-  const [wallet, setWallet] = useState("");
-
-  return (
-    <div className="p-4">
-      <h1>Simple Token DApp</h1>
-      <button onClick={() => alert('Minted!')}>Mint Token</button>
-    </div>
-  );
-}
-`,
+    "frontend.jsx": `export default function App() { return <div>Hello</div>; }`
   });
 }

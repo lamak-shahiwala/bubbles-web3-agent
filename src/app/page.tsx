@@ -4,6 +4,8 @@ import Image from "next/image";
 import ChatUI from "@/components/ChatUI";
 import { SiLinkedin, SiGithub } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
+import CodeEditor from "@/components/CodeEditor";
+import PreviewWindow from "@/components/PreviewWindow";
 
 export default function Home() {
 
@@ -20,7 +22,7 @@ export default function Home() {
   };
 
   return (
-    <div className="lg:fixed bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
+    <div className="bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
       <main className="flex flex-col items-center gap-8 flex-grow">
         <Image
           className="hover:scale-105 transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-48 md:w-48 lg:h-60 lg:w-60"
@@ -34,7 +36,18 @@ export default function Home() {
           Launch a Web3 App in <span className="italic">minutes</span>.
         </h2>
         <ChatUI onSubmit={generateCode}/>
-        
+        {code["contract.sol"] && (
+        <div className="my-4">
+          <h2 className="text-lg font-semibold">Smart Contract</h2>
+          <CodeEditor code={code["contract.sol"]} language="solidity" />
+        </div>
+      )}
+      {code["frontend.jsx"] && (
+        <div className="my-4">
+          <h2 className="text-lg font-semibold">Live Preview</h2>
+          <PreviewWindow code={code["frontend.jsx"]} />
+        </div>
+      )} 
       </main>
 
       <div className="mt-10 flex gap-6 flex-wrap items-center justify-center text-gray-800 text-3xl">
