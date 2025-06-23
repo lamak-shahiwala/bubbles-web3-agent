@@ -1,17 +1,19 @@
 import Image from "next/image";
+import ChatUI from "./components/chatui/chatui";
 
 export default function Home() {
   return (
     <div className="bg-[url('/images/bubbles.png')] bg-cover grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
-          className="dark:invert"
+          className="dark:invert hover:scale-[1.05]"
           src="/images/bubbles_logo.png"
-          alt="Bubbles   logo"
+          alt="Bubbles logo"
           width={180}
           height={38}
           priority
         />
+        <ChatUI />
       </main>
       {/*<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
