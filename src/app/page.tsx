@@ -44,6 +44,12 @@ export default function Home() {
       )}
       {code["frontend.jsx"] && (
         <div className="my-4">
+          <h2 className="text-lg font-semibold">React Code</h2>
+          <CodeEditor code={code["frontend.jsx"]} language="react" />
+        </div>
+      )}
+      {code["frontend.jsx"] && (
+        <div className="my-4">
           <h2 className="text-lg font-semibold">Live Preview</h2>
           <PreviewWindow code={code["frontend.jsx"]} />
         </div>
