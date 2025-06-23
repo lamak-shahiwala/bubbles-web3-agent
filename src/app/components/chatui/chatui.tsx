@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from 'react';
-import { IoSend } from "react-icons/io5";
+import { IoSend, IoBulb } from "react-icons/io5";
 
 export default function ChatUI() {
   const [input, setInput] = useState("");
+  const [focused, setFocused] = useState(false);
 
   const web3Prompts = [
+    "Build an ERC20 token dashboard with transfer UI",
     "Build a decentralized voting app using smart contracts.",
     "Create a Web3-based crowdfunding platform like Kickstarter.",
     "Develop a blockchain-based certification verifier.",
@@ -22,47 +24,71 @@ export default function ChatUI() {
     if (!input.trim()) return;
     console.log("Submitted:", input);
     setInput("");
+    setFocused(false);
   };
 
   const handleRandomPrompt = () => {
     const random = web3Prompts[Math.floor(Math.random() * web3Prompts.length)];
     setInput(random);
+    setFocused(true);
   };
 
   return (
-    <div className="relative  w-full h-[92px] sm:h-[155px] md:w-[600px] md:h-[170px] lg:w-[775px] lg:h-[170px] bg-blue-50 bg-opacity-80 rounded-3xl p-6 flex flex-row md:flex-col  justify-between shadow-md">
-        <div className="relative w-full h-full">
-        {input === "" && (
-          <div className="absolute flex items-center justify-center pointer-events-none text-gray-400 text-sm sm:text-lg md:text-lg lg:text-xl text-center px-4">
-            Describe your Web3 App
-          </div>
-        )}
+    <div
+      className={`relative w-full transition-all duration-300
+        ${focused || input ? "h-[155px] md:h-[170px] lg:h-[170px]" : "h-[72px]"} 
+        md:w-[600px] lg:w-[775px] 
+        bg-blue-50 bg-opacity-75 rounded-lg p-4 md:p-6 flex flex-col justify-between shadow-md`}
+    >
+      <div className={`flex w-full items-center gap-3 ${!focused ? "flex-1" : ""}`}>
         <textarea
           value={input}
+          placeholder={focused ? 'Describe your Web3 App' : "Different Prompts"}
+          onFocus={() => setFocused(true)}
+          onBlur={() => {
+            if (!input.trim()) setFocused(false);
+          }}
           onChange={(e) => setInput(e.target.value)}
-          className="bg-transparent resize-none w-full h-full outline-none text-gray-700 text-xs sm:text-base md:text-lg lg:text-xl leading-relaxed"
+          rows={1}
+          className="bg-transparent resize-none w-full h-full outline-none text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed"
         />
+        {!focused && (
+        <button
+          onClick={handleRandomPrompt}
+          className="flex items-center px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-100 transition whitespace-nowrap flex-shrink-0"
+        >
+          <span className="hidden md:flex items-center gap-1"><IoBulb /> Random Prompt</span>
+          <span className="md:hidden"><IoBulb /></span>
+        </button>
+      )}
       </div>
+
       <div className="flex items-center justify-end space-x-3 mt-2">
+        {focused && (
         <button
           onClick={handleRandomPrompt}
-          className="md:flex hidden items-center gap-1 px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-50 transition"
+          className="md:flex hidden items-center gap-1 px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-100 transition"
         >
-          💡 Random Prompt
+          <IoBulb /> Random Prompt
         </button>
+        )}
+        {focused && (
         <button
           onClick={handleRandomPrompt}
-          className="md:hidden flex items-center gap-1 px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-50 transition"
+          className="md:hidden flex items-center gap-1 px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-100 transition"
         >
-          💡
+          <IoBulb />
         </button>
+        )}
+        {focused && (
         <button
           onClick={handleSend}
           className="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center text-white text-xl transition"
         >
           <IoSend />
         </button>
+         )}
       </div>
-      </div>
+    </div>
   );
-};
+}
