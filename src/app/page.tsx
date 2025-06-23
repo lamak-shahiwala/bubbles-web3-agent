@@ -1,9 +1,24 @@
+"use client"
+import { useState } from "react";
 import Image from "next/image";
-import ChatUI from "../chatui/chatui";
+import ChatUI from "@/chatui/chatui";
 import { SiLinkedin, SiGithub } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
 
 export default function Home() {
+
+  const [code, setCode] = useState<{ [key: string]: string }>({});
+
+  const generateCode = async (prompt: string) => {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    setCode(data);
+  };
+
   return (
     <div className="lg:fixed bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
       <main className="flex flex-col items-center gap-8 flex-grow">
@@ -18,6 +33,7 @@ export default function Home() {
         <h2 className="text-xl md:text-3xl font-bold text-gray-800 text-center">
           Launch a Web3 App in <span className="italic">minutes</span>.
         </h2>
+        <ChatUI onSubmit={generateCode}/>
         
       </main>
 
