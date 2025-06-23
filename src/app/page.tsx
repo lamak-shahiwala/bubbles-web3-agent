@@ -13,6 +13,7 @@ export default function Home() {
           alt="Bubbles logo"
           width={200}
           height={200}
+          priority
         />
         <h2 className="text-xl md:text-3xl font-bold text-gray-800 text-center">
           Launch a Web3 App in <span className="italic">minutes</span>.
