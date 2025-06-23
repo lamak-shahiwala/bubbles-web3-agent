@@ -5,7 +5,7 @@ import { TbWorldWww } from "react-icons/tb";
 
 export default function Home() {
   return (
-    <div className="bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
+    <div className="fixed bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
       <main className="flex flex-col items-center gap-8 flex-grow">
         <Image
           className="hover:scale-105 transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-48 md:w-48 lg:h-60 lg:w-60"
@@ -20,7 +20,7 @@ export default function Home() {
         <ChatUI />
       </main>
 
-      <footer className="mt-10 flex gap-6 flex-wrap items-center justify-center text-gray-800 text-3xl">
+      <div className="mt-10 flex gap-6 flex-wrap items-center justify-center text-gray-800 text-3xl">
         <a
           href="https://github.com/lamak-shahiwala"
           target="_blank"
@@ -45,7 +45,7 @@ export default function Home() {
         >
           <SiLinkedin />
         </a>
-      </footer>
+      </div>
     </div>
   );
 }
