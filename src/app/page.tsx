@@ -1,5 +1,7 @@
 import Image from "next/image";
 import ChatUI from "./components/chatui/chatui";
+import { SiLinkedin, SiGithub } from "react-icons/si";
+import { TbWorldWww } from "react-icons/tb";
 
 export default function Home() {
   return (
@@ -13,55 +15,37 @@ export default function Home() {
           height={50}
           priority
         />
+        <p className="text-3xl font-bold pb-10 text-gray-800">
+          Launch a Web3 App in <span className="italic">minutes</span>.
+        </p>
         <ChatUI />
       </main>
-      {/*<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      {<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          className="text-3xl hover:scale-[1.1]"
+          href="https://github.com/lamak-shahiwala"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
+          <SiGithub />
         </a>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          className="text-3xl hover:scale-[1.1]"
+          href="https://lamaks-desktop.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
+          <TbWorldWww />
         </a>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          className="text-3xl hover:scale-[1.1]"
+          href="https://www.linkedin.com/in/lamak-shahiwala-766986256"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
+          <SiLinkedin />
         </a>
-      </footer>*/}
+      </footer>}
     </div>
   );
 }
