@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { IoSend } from "react-icons/io5";
 
-const ChatUI = () => {
+export default function ChatUI() {
   const [input, setInput] = useState("");
 
   const handleSend = () => {
@@ -12,17 +12,16 @@ const ChatUI = () => {
   };
 
   return (
-    <div className="relative w-[682px] h-[155px] bg-gradient-to-br from-blue-50 to-blue-100 bg-opacity-80 rounded-3xl p-6 flex flex-col justify-between shadow-md">
-      <textarea
+    <div className="relative  w-full h-[92px] sm:h-[155px] md:w-[600px] md:h-[170px] lg:w-[900px] lg:h-[180px] bg-gradient-to-br from-blue-50 to-blue-100 bg-opacity-80 rounded-3xl p-6 flex flex-row md:flex-col  justify-between shadow-md">
+        <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Enter your project's description"
-        className="bg-transparent resize-none w-full h-full outline-none text-gray-700 placeholder-gray-400 text-lg leading-relaxed"
+        className="bg-transparent resize-none w-full h-full outline-none text-gray-700 placeholder-gray-400 text-xs sm:text-xs  md:text-lg leading-relaxed"
       />
-
       <div className="flex items-center justify-end space-x-3 mt-2">
         <button
-          className="flex items-center gap-1 px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-50 transition"
+          className="md:flex hidden items-center gap-1 px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-50 transition"
         >
           💡 Random Prompt
         </button>
@@ -34,8 +33,6 @@ const ChatUI = () => {
           <IoSend />
         </button>
       </div>
-    </div>
+      </div>
   );
 };
-
-export default ChatUI;

@@ -3,14 +3,14 @@ import ChatUI from "./components/chatui/chatui";
 
 export default function Home() {
   return (
-    <div className="bg-[url('/images/bubbles.png')] bg-cover grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="bg-[url('/images/bubbles.png')] bg-cover min-h-screen p-8 pb-25 sm:p-20 font-[family-name:var(--font-geist-sans)] grid place-items-center">
+      <main className="flex flex-col gap-[32px] items-center">
         <Image
-          className="dark:invert hover:scale-[1.05]"
+          className="dark:invert hover:scale-[1.05] transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-50 md:w-50 lg:h-60 lg:w-60"
           src="/images/bubbles_logo.png"
           alt="Bubbles logo"
-          width={180}
-          height={38}
+          width={200}
+          height={50}
           priority
         />
         <ChatUI />
