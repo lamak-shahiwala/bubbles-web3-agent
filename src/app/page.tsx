@@ -5,46 +5,47 @@ import { TbWorldWww } from "react-icons/tb";
 
 export default function Home() {
   return (
-    <div className="bg-[url('/images/bubbles.png')] bg-cover min-h-screen p-8 pb-25 sm:p-20 font-[family-name:var(--font-geist-sans)] grid place-items-center">
-      <main className="flex flex-col gap-[32px] items-center lg:mb-10">
+    <div className="bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
+      <main className="flex flex-col items-center gap-8 flex-grow">
         <Image
-          className="hover:scale-[1.05] transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-50 md:w-50 lg:h-60 lg:w-60"
+          className="hover:scale-105 transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-48 md:w-48 lg:h-60 lg:w-60"
           src="/images/bubbles_logo.png"
           alt="Bubbles logo"
           width={200}
-          height={50}
+          height={200}
         />
-        <p className="text-2xl md:text-3xl font-bold pb-10 text-gray-800">
+        <h2 className="text-xl md:text-3xl font-bold text-gray-800 text-center">
           Launch a Web3 App in <span className="italic">minutes</span>.
-        </p>
+        </h2>
         <ChatUI />
       </main>
-      {<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+
+      <footer className="mt-10 flex gap-6 flex-wrap items-center justify-center text-gray-800 text-3xl">
         <a
-          className="text-3xl hover:scale-[1.1] text-gray-800"
           href="https://github.com/lamak-shahiwala"
           target="_blank"
           rel="noopener noreferrer"
+          className="hover:scale-110 transition-transform"
         >
           <SiGithub />
         </a>
         <a
-          className="text-3xl hover:scale-[1.1] text-gray-800"
           href="https://lamaks-desktop.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
+          className="hover:scale-110 transition-transform"
         >
           <TbWorldWww />
         </a>
         <a
-          className="text-3xl hover:scale-[1.1] text-gray-800"
           href="https://www.linkedin.com/in/lamak-shahiwala-766986256"
           target="_blank"
           rel="noopener noreferrer"
+          className="hover:scale-110 transition-transform"
         >
           <SiLinkedin />
         </a>
-      </footer>}
+      </footer>
     </div>
   );
 }

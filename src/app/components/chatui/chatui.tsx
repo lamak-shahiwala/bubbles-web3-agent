@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { IoSend, IoBulb } from "react-icons/io5";
+import DifferentPrompts from './different_prompts';
 
 export default function ChatUI() {
   const [input, setInput] = useState("");
@@ -34,16 +35,23 @@ export default function ChatUI() {
   };
 
   return (
+    <div className="flex flex-col md:flex-row gap-2 w-full">
     <div
-      className={`relative w-full transition-all duration-300
+      className={`relative w-full md:w-[700px] lg:w-[800px] transition-all duration-300
         ${focused || input ? "h-[155px] md:h-[170px] lg:h-[170px]" : "h-[72px]"} 
-        md:w-[600px] lg:w-[775px] 
         bg-blue-50 bg-opacity-75 rounded-lg p-4 md:p-6 flex flex-col justify-between shadow-md`}
     >
       <div className={`flex w-full items-center gap-3 ${!focused ? "flex-1" : ""}`}>
+
+        {!focused && input === "" && (
+            <div className="absolute top-0 pl-2 pr-2 w-full h-full text-gray-400 text-sm sm:text-base md:text-lg lg:text-xl pointer-events-none flex items-center">
+                <DifferentPrompts />
+            </div>
+        )}
+
         <textarea
           value={input}
-          placeholder={focused ? 'Describe your Web3 App' : "Different Prompts"}
+          placeholder={focused ? 'Describe your Web3 App' : ""}
           onFocus={() => setFocused(true)}
           onBlur={() => {
             if (!input.trim()) setFocused(false);
@@ -52,15 +60,6 @@ export default function ChatUI() {
           rows={1}
           className="bg-transparent resize-none w-full h-full outline-none text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed"
         />
-        {!focused && (
-        <button
-          onClick={handleRandomPrompt}
-          className="flex items-center px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-100 transition whitespace-nowrap flex-shrink-0"
-        >
-          <span className="hidden md:flex items-center gap-1"><IoBulb /> Random Prompt</span>
-          <span className="md:hidden"><IoBulb /></span>
-        </button>
-      )}
       </div>
 
       <div className="flex items-center justify-end space-x-3 mt-2">
@@ -89,6 +88,16 @@ export default function ChatUI() {
         </button>
          )}
       </div>
+      
+    </div>
+    {!focused && (
+        <button
+          onClick={handleRandomPrompt}
+          className="hidden md:flex items-center px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-100 transition whitespace-nowrap flex-shrink-0"
+        >
+            <IoBulb /> Random Prompt
+        </button>
+      )}
     </div>
   );
 }
