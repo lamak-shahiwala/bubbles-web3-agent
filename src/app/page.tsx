@@ -8,12 +8,11 @@ export default function Home() {
     <div className="bg-[url('/images/bubbles.png')] bg-cover min-h-screen p-8 pb-25 sm:p-20 font-[family-name:var(--font-geist-sans)] grid place-items-center">
       <main className="flex flex-col gap-[32px] items-center">
         <Image
-          className="dark:invert hover:scale-[1.05] transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-50 md:w-50 lg:h-60 lg:w-60"
+          className="hover:scale-[1.05] transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-50 md:w-50 lg:h-60 lg:w-60"
           src="/images/bubbles_logo.png"
           alt="Bubbles logo"
           width={200}
           height={50}
-          priority
         />
         <p className="text-3xl font-bold pb-10 text-gray-800">
           Launch a Web3 App in <span className="italic">minutes</span>.

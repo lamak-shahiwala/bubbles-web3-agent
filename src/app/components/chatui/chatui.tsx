@@ -31,12 +31,18 @@ export default function ChatUI() {
 
   return (
     <div className="relative  w-full h-[92px] sm:h-[155px] md:w-[600px] md:h-[170px] lg:w-[775px] lg:h-[170px] bg-blue-50 bg-opacity-80 rounded-3xl p-6 flex flex-row md:flex-col  justify-between shadow-md">
+        <div className="relative w-full h-full">
+        {input === "" && (
+          <div className="absolute flex items-center justify-center pointer-events-none text-gray-400 text-sm sm:text-lg md:text-lg lg:text-xl text-center px-4">
+            Describe your Web3 App
+          </div>
+        )}
         <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Describe your Web3 App"
-        className="bg-transparent resize-none w-full h-full outline-none text-gray-700 placeholder-gray-400 text-xs sm:text-xs  md:text-lg lg:text-xl leading-relaxed"
-      />
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="bg-transparent resize-none w-full h-full outline-none text-gray-700 text-xs sm:text-base md:text-lg lg:text-xl leading-relaxed"
+        />
+      </div>
       <div className="flex items-center justify-end space-x-3 mt-2">
         <button
           onClick={handleRandomPrompt}
@@ -44,7 +50,12 @@ export default function ChatUI() {
         >
           💡 Random Prompt
         </button>
-
+        <button
+          onClick={handleRandomPrompt}
+          className="md:hidden flex items-center gap-1 px-3 py-1.5 border border-blue-500 text-blue-600 rounded-full text-sm hover:bg-blue-50 transition"
+        >
+          💡
+        </button>
         <button
           onClick={handleSend}
           className="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center text-white text-xl transition"
