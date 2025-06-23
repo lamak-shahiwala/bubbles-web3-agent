@@ -5,7 +5,7 @@ import { TbWorldWww } from "react-icons/tb";
 
 export default function Home() {
   return (
-    <div className="fixed bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
+    <div className="lg:fixed bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
       <main className="flex flex-col items-center gap-8 flex-grow">
         <Image
           className="hover:scale-105 transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-48 md:w-48 lg:h-60 lg:w-60"
