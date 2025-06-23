@@ -14,7 +14,7 @@ export default function Home() {
           width={200}
           height={50}
         />
-        <p className="text-3xl font-bold pb-10 text-gray-800">
+        <p className="text-2xl md:text-3xl font-bold pb-10 text-gray-800">
           Launch a Web3 App in <span className="italic">minutes</span>.
         </p>
         <ChatUI />
