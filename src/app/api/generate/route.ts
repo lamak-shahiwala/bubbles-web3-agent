@@ -1,10 +1,60 @@
+import { OpenAI } from "openai";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
-  const { prompt } = await req.json();
-
-  return NextResponse.json({
-  "contract.sol": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Voting {\n    struct Candidate {\n        uint id;\n        string name;\n        uint voteCount;\n    }\n\n    mapping(uint => Candidate) public candidates;\n    mapping(address => bool) public voters;\n    uint public candidatesCount;\n\n    event Voted(address indexed voter, uint indexed candidateId);\n\n    function addCandidate(string memory _name) public {\n        candidatesCount++;\n        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);\n    }\n\n    function vote(uint _candidateId) public {\n        require(!voters[msg.sender], \"Already voted.\");\n        require(_candidateId > 0 && _candidateId <= candidatesCount, \"Invalid candidate.\");\n\n        voters[msg.sender] = true;\n        candidates[_candidateId].voteCount++;\n\n        emit Voted(msg.sender, _candidateId);\n    }\n}",
-  "frontend.jsx": "(() => {\n  const { useState, useEffect } = React;\n  const { ethers } = window;\n\n  const contractAddress = \"YOUR_CONTRACT_ADDRESS\";\n  const abi = [\n    \"function candidatesCount() view returns (uint256)\",\n    \"function candidates(uint256) view returns (uint256 id, string name, uint256 voteCount)\",\n    \"function vote(uint256 candidateId)\",\n    \"function addCandidate(string memory _name)\"\n  ];\n\n  function App() {\n    const [provider, setProvider] = useState(null);\n    const [signer, setSigner] = useState(null);\n    const [contract, setContract] = useState(null);\n    const [account, setAccount] = useState(\"\");\n    const [candidates, setCandidates] = useState([]);\n    const [selectedCandidate, setSelectedCandidate] = useState(null);\n    const [newCandidate, setNewCandidate] = useState(\"\");\n\n    useEffect(() => {\n      async function init() {\n        if (window.ethereum) {\n          const prov = new ethers.providers.Web3Provider(window.ethereum);\n          await prov.send(\"eth_requestAccounts\", []);\n          const signer = prov.getSigner();\n          const addr = await signer.getAddress();\n          const contract = new ethers.Contract(contractAddress, abi, signer);\n\n          setProvider(prov);\n          setSigner(signer);\n          setAccount(addr);\n          setContract(contract);\n\n          const count = await contract.candidatesCount();\n          let items = [];\n          for (let i = 1; i <= count; i++) {\n            const c = await contract.candidates(i);\n            items.push({ id: c.id.toNumber(), name: c.name, voteCount: c.voteCount.toNumber() });\n          }\n          setCandidates(items);\n        }\n      }\n      init();\n    }, []);\n\n    const handleVote = async () => {\n      if (contract && selectedCandidate) {\n        const tx = await contract.vote(selectedCandidate);\n        await tx.wait();\n        alert('Vote submitted! Refresh to see updated results.');\n      }\n    };\n\n    const handleAddCandidate = async () => {\n      if (contract && newCandidate.trim() !== \"\") {\n        const tx = await contract.addCandidate(newCandidate.trim());\n        await tx.wait();\n        alert('Candidate added! Refresh to see updated list.');\n      }\n    };\n\n    return (\n      <div className=\"p-4\">\n        <h1>Decentralized Voting DApp</h1>\n        <p><strong>Account:</strong> {account}</p>\n\n        <h2>Candidates</h2>\n        <ul>\n          {candidates.map(c => (\n            <li key={c.id}>\n              <label>\n                <input\n                  type=\"radio\"\n                  name=\"candidate\"\n                  value={c.id}\n                  onChange={() => setSelectedCandidate(c.id)}\n                /> {c.name} - Votes: {c.voteCount}\n              </label>\n            </li>\n          ))}\n        </ul>\n\n        <button onClick={handleVote} disabled={!selectedCandidate} style={{ marginTop: 10 }}>\n          Vote\n        </button>\n\n        <h2 style={{ marginTop: 30 }}>Add Candidate</h2>\n        <input\n          type=\"text\"\n          placeholder=\"Candidate name\"\n          value={newCandidate}\n          onChange={e => setNewCandidate(e.target.value)}\n          style={{ marginRight: 10 }}\n        />\n        <button onClick={handleAddCandidate}>Add</button>\n      </div>\n    );\n  }\n\n  return <App />;\n})()"
+const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY,
 });
+
+function cleanJSONResponse(raw: string): string {
+  if (raw.startsWith("```")) {
+    raw = raw.replace(/```json|```/g, "").trim();
+  }
+  return raw;
+}
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const prompt = body?.prompt;
+
+  if (!prompt || typeof prompt !== "string") {
+    return NextResponse.json({ error: "Invalid prompt" }, { status: 400 });
+  }
+
+  const systemPrompt = `
+You are a Web3 developer.
+
+Respond ONLY with a valid JSON object that has the following **structure**:
+{
+  "contract.sol": "Solidity code here",
+  "frontend.jsx": "React/JSX code here"
+}
+
+⚠️ Strict requirements:
+- Use ONLY double-quoted property names
+- Return no markdown, no comments, no extra text
+- The JSON must be parsable using JSON.parse()
+
+Output ONLY raw JSON.`;
+
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "qwen/qwen3-32b:free",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt },
+      ],
+    });
+
+    const rawContent = response.choices[0].message.content || "{}";
+    const cleaned = cleanJSONResponse(rawContent);
+
+    const parsed = JSON.parse(cleaned);
+    return NextResponse.json(parsed);
+
+  } catch (err) {
+    console.error("Parse error:", err);
+    return NextResponse.json({ error: "Failed to parse OpenAI response" }, { status: 500 });
+  }
 }
