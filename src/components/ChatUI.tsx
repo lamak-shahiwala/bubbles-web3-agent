@@ -46,9 +46,6 @@ export default function ChatUI({ onSubmit }: { onSubmit: (prompt: string) => voi
           value={prompt}
           placeholder={focused ? 'Describe your Web3 App...' : ""}
           onFocus={() => setFocused(true)}
-          onBlur={() => {
-            if (!prompt.trim()) setFocused(false);
-          }}
           onChange={(e) => setPrompt(e.target.value)}
           rows={focused ? 3 : 1}
           className="bg-transparent resize-none w-full h-full outline-none text-gray-700 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed"

@@ -45,10 +45,14 @@ export default function Home() {
           priority
         />
         <h2 className="text-xl md:text-3xl font-bold text-gray-800 text-center">
-          Launch a Web3 App in <span className="italic">minutes</span>.
+          Generate your Web3 boilerplate in <span className="italic">minutes</span>.
         </h2>
-
-        {!isLoading && !showResult && <ChatUI onSubmit={generateCode} />}
+        <div className="w-full flex justify-center">
+          {!isLoading && !showResult && (
+          <div>
+            <ChatUI onSubmit={generateCode} />
+          </div>)}
+        </div>
 
         {isLoading && (
           <div className="text-center text-xl text-blue-600 font-medium animate-pulse py-10">
