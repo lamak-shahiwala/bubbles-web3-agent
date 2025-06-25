@@ -1,4 +1,4 @@
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
+import { LiveProvider, LiveError, LivePreview } from "react-live";
 
 export default function PreviewWindow({ code }: { code: string }) {
   return (

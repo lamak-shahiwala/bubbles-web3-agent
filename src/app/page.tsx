@@ -7,7 +7,6 @@ import { SiLinkedin, SiGithub } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
 
 export default function Home() {
-  const [code, setCode] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const router = useRouter();
@@ -15,7 +14,6 @@ export default function Home() {
   const generateCode = async (prompt: string) => {
   setIsLoading(true);
   setShowResult(false);
-  setCode({});
   try {
     const res = await fetch("/api/generate", {
       method: "POST",
