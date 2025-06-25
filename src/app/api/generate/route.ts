@@ -22,21 +22,15 @@ export async function POST(req: NextRequest) {
   }
 
   const systemPrompt = `
-You are a Web3 developer.
+You are a Web3 expert developer.
+When given a natural language description of a Web3 application, you must return valid, functional code in this exact JSON format:
 
-Respond ONLY with a valid JSON object that has the following **structure**:
 {
-  "contract.sol": "Solidity code here",
-  "frontend.jsx": "React/JSX code here"
+  "contract.sol": "// Solidity contract code here",
+  "frontend.jsx": "// React component code here"
 }
 
-⚠️ Strict requirements:
-- Use ONLY double-quoted property names
-- Return no markdown, no comments, no extra text
-- The JSON must be parsable using JSON.parse()
-
-Output ONLY raw JSON.`;
-
+Only include code inside the JSON. No markdown or explanations.`;
 
   try {
     const response = await openai.chat.completions.create({
