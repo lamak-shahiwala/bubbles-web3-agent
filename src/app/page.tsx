@@ -5,14 +5,11 @@ import Image from "next/image";
 import ChatUI from "@/components/ChatUI";
 import { SiLinkedin, SiGithub } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
-import CodeEditor from "@/components/CodeEditor";
-import PreviewWindow from "@/components/PreviewWindow";
 
 export default function Home() {
   const [code, setCode] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<"code" | "preview">("code");
   const router = useRouter();
 
   const generateCode = async (prompt: string) => {
