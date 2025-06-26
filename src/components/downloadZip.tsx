@@ -1,5 +1,6 @@
 "use client";
 import JSZip from "jszip";
+import { FiDownload } from "react-icons/fi";
 
 interface ZipDownloadButtonProps {
   files: { [key: string]: string };
@@ -26,9 +27,9 @@ export default function ZipDownloadButton({ files }: ZipDownloadButtonProps) {
   return (
     <button
       onClick={downloadZip}
-      className="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      className="flex flex-row items-center ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
     >
-      Download ZIP
+      <FiDownload className="mr-2" />(.zip)
     </button>
   );
 }
