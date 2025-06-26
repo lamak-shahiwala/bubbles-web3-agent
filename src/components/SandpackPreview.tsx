@@ -1,6 +1,7 @@
 import {
   SandpackProvider,
   SandpackLayout,
+  SandpackCodeEditor,
   SandpackPreview,
   SandpackProviderProps,
 } from "@codesandbox/sandpack-react";
@@ -31,6 +32,7 @@ export default function LiveSandpackPreview({
       options={{ autorun: true }}
     >
       <SandpackLayout className="h-full border rounded">
+        <SandpackCodeEditor className="flex-1" showLineNumbers />
         <SandpackPreview className="flex-1 border-l" />
       </SandpackLayout>
     </SandpackProvider>

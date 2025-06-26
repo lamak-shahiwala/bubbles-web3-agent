@@ -108,8 +108,8 @@ export async function POST(req: NextRequest) {
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: prompt },
-      ],
-      temperature: 0.2,
+      ], 
+      temperature: 0,
     });
     console.error(response)
     const rawContent = response.choices[0].message.content || "{}";
