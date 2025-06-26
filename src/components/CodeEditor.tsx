@@ -1,6 +1,12 @@
 import Editor from "@monaco-editor/react";
 
-export default function CodeEditor({ code = "", language = "solidity" }) {
+type CodeEditorProps = {
+  code: string;
+  language: string;
+  onChange?: (newValue: string) => void;
+};
+
+export default function CodeEditor({ code, language, onChange }: CodeEditorProps) {
   return (
     <div className="border rounded-md overflow-hidden">
       <Editor
@@ -8,6 +14,7 @@ export default function CodeEditor({ code = "", language = "solidity" }) {
         width="900px"
         defaultLanguage={language}
         defaultValue={code}
+        onChange={(value) => onChange?.(value ?? "")}
         theme="vs-dark"
       />
     </div>
