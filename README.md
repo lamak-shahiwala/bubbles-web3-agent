@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bubbles - Web3 Agent
 
-## Getting Started
+This project is built using Nextjs, typescript and tailwindcss 3.4.1
+It allows user to generate a web3app boilerplate code for:
 
-First, run the development server:
+- frontend (react based)
+- contract (solidity contract (ERC20, ERC721, etc..))
+- backend and server logic
+- full project structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## How it works?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- User enters prompt in natural language
+- qwen3_32b generates the code in json format and returns it
+- the code is shown to the user on result page with monaco code editor
+- the live preview is shown using SandpackPreview (you can also use SandpackEditor to see live code changes)
+- atlast user can download the project structure as a .zip
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- "@codesandbox/sandpack-react": "^2.20.0",
+- "@monaco-editor/react": "^4.7.0",
+- "autoprefixer": "^10.4.21",
+- "jszip": "^3.10.1",
+- "next": "15.3.4",
+- "openai": "^5.7.0",
+- "postcss": "^8.5.6",
+- "react": "^19.0.0",
+- "react-arborist": "^3.4.3",
+- "react-dom": "^19.0.0",
+- "react-icons": "^5.5.0",
+- "react-live": "^4.1.8", [this was used before using sandpack preview]
+- "react-simple-typewriter": "^5.0.1"
 
-## Learn More
+## How to run on local machine??
 
-To learn more about Next.js, take a look at the following resources:
+- clone the project
+- run : npm install
+- make sure all the dependencies are there
+- create an qwen3_32b (free) api key from https://openrouter.ai/
+- create ".env.local" file on root folder and just create a variable OPENAI_API_KEY = {Your Key Here} or you can directly paste your key in route.ts file located at src\app\api\generate\route.ts
+- after performing above steps you are good to go just run: npm run dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Future Plans
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- deploying contracts to testnet
+- make the chat interface and database connection to store the change and let user improve his web3 app just by interacting with the agent "Bubbles"
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Thankyou for showing interest
