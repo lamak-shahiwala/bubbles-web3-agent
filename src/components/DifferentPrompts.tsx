@@ -8,16 +8,9 @@ const DifferentPrompts = () =>  {
           words={
         [
             "Build an ERC20 token dashboard with transfer UI",
-            "Build a decentralized voting app using smart contracts.",
-            "Create a Web3-based crowdfunding platform like Kickstarter.",
-            "Develop a blockchain-based certification verifier.",
-            "Design a decentralized blogging platform with content ownership.",
-            "Create an NFT ticketing system for events.",
-            "Build a Web3 job board that pays in crypto.",
-            "Make a DAO for community decision-making.",
-            "Create a gasless wallet for onboarding new users.",
-            "Design a decentralized ride-sharing dApp.",
-            "Build a crypto donation tracker for NGOs.",
+            "Create an NFT mining UI with an ERC721",
+            "Build a dashboard that shows ETH balance and allow transfers",
+            "Generate a staking contract and UI to lock tokens for 30 days",
         ]
           }
           loop={true}
