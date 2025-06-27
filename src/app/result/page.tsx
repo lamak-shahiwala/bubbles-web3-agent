@@ -107,12 +107,12 @@ root.render(<App />);`;
         <div className="flex flex-col w-1/2 border-r-2 border-gradient-to-r from-[#0085FF] to-[#FEC8FF] bg-white bg-opacity-50 backdrop-blur-sm">
           <div className="flex h-full overflow-hidden">
             {/* File Tree */}
-            <div className="bg-gray-100 opacity-90 overflow-auto p-2">
+            <div className="w-64 bg-gray-100 opacity-90 overflow-auto">
               <Tree<FileNode>
                 data={fileTree}
                 openByDefault
                 rowHeight={30}
-                indent={16}
+                indent={14}
                 selection="single"
                 onSelect={(nodes) => {
                   if (nodes.length > 0) {
@@ -123,13 +123,13 @@ root.render(<App />);`;
                 {({ node, style }) => (
                   <div
                     style={style}
-                    className={`px-2 py-1 cursor-pointer rounded ${
+                    className={`px-4 py-2 cursor-pointer rounded ${
                       node.data.id === selectedFile
                         ? "bg-blue-200 font-semibold"
                         : "hover:bg-blue-100"
                     }`}
                   >
-                    {node.data.name}
+                    <span className="pl-2">{node.data.name}</span>
                   </div>
                 )}
               </Tree>
