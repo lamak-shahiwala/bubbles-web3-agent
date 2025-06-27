@@ -4,6 +4,7 @@ import { Tree } from "react-arborist";
 import CodeEditor from "@/components/CodeEditor";
 import LiveSandpackPreview from "@/components/SandpackPreview";
 import ZipDownloadButton from "@/components/downloadZip";
+import Image from "next/image";
 
 type FileNode = {
   id: string;
@@ -23,11 +24,7 @@ function buildFileTree(files: { [key: string]: string }): FileNode[] {
       const id = "/" + parts.slice(0, i + 1).join("/");
       let child = current.children.find((c) => c.name === part);
       if (!child) {
-        child = {
-          id,
-          name: part,
-          children: [],
-        };
+        child = { id, name: part, children: [] };
         current.children.push(child);
       }
       current = child;
@@ -39,46 +36,37 @@ function buildFileTree(files: { [key: string]: string }): FileNode[] {
 
 export default function ResultPage() {
   const [code, setCode] = useState<{ [key: string]: string }>({});
-  const [selectedTab, setSelectedTab] = useState<"code" | "preview">("code");
   const [selectedFile, setSelectedFile] = useState<string>("");
 
   useEffect(() => {
-  const stored = localStorage.getItem("generatedCode");
-  if (stored) {
-    const raw = JSON.parse(stored);
-    const parsed: { [key: string]: string } = {};
+    const stored = localStorage.getItem("generatedCode");
+    if (stored) {
+      const raw = JSON.parse(stored);
+      const parsed: { [key: string]: string } = {};
 
-    for (const [key, value] of Object.entries(raw)) {
-      if (typeof value === "string") {
-        parsed[key] = value;
+      for (const [key, value] of Object.entries(raw)) {
+        if (typeof value === "string") {
+          parsed[key.startsWith("/") ? key : "/" + key] = value;
+        }
       }
-    }
 
-    const normalized = Object.fromEntries(
-      Object.entries(parsed).map(([k, v]) =>
-        [k.startsWith("/") ? k : "/" + k, v]
-      )
-    );
-
-    if (!normalized["/src/index.jsx"]) {
-      normalized["/src/index.jsx"] = `import React from 'react';
+      if (!parsed["/src/index.jsx"]) {
+        parsed["/src/index.jsx"] = `import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
-`;
+root.render(<App />);`;
+      }
+
+      setCode(parsed);
+
+      const files = Object.keys(parsed);
+      if (files.length > 0) {
+        setSelectedFile(files[0]);
+      }
     }
-
-    setCode(normalized);
-
-    const files = Object.keys(normalized);
-    if (files.length > 0) {
-      setSelectedFile(files[0]);
-    }
-  }
-}, []);
-
+  }, []);
 
   const fileTree = buildFileTree(code);
 
@@ -100,35 +88,26 @@ root.render(<App />);
   }, [code]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-center flex-grow">🚀 Web3 Project Generated</h1>
-        <ZipDownloadButton files={code} />
+    <div className="h-screen flex flex-col bg-gradient-to-r from-[#FEC8FF] to-[#0085FF]">
+      <div className="flex justify-between items-center p-4 bg-white bg-opacity-50 backdrop-blur-sm shadow-md">
+        <div className="flex text-2xl font-bold items-center flex-row">
+          <Image
+          className="pr-2"
+          src="/images/bubbles_logo.png"
+          alt="Bubbles logo"
+          width={50}
+          height={50}
+          priority
+          />
+          Web3 Project
+        </div>
       </div>
 
-      <div className="flex justify-center mb-4">
-        <button
-          className={`px-4 py-2 rounded-t-md ${
-            selectedTab === "code" ? "bg-white shadow font-semibold" : "bg-blue-100"
-          }`}
-          onClick={() => setSelectedTab("code")}
-        >
-          Code Editor
-        </button>
-        <button
-          className={`px-4 py-2 rounded-t-md ${
-            selectedTab === "preview" ? "bg-white shadow font-semibold" : "bg-blue-100"
-          }`}
-          onClick={() => setSelectedTab("preview")}
-        >
-          Live Preview
-        </button>
-      </div>
-
-      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden h-[70vh]">
-        {selectedTab === "code" && (
-          <div className="flex w-full">
-            <div className="w-64 border-r bg-gray-100 overflow-auto p-2">
+      <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-col w-1/2 border-r-2 border-gradient-to-r from-[#0085FF] to-[#FEC8FF] bg-white bg-opacity-50 backdrop-blur-sm">
+          <div className="flex h-full overflow-hidden">
+            {/* File Tree */}
+            <div className=" bg-gray-100 opacity-90 overflow-auto p-2">
               <Tree<FileNode>
                 data={fileTree}
                 openByDefault
@@ -155,8 +134,12 @@ root.render(<App />);
                 )}
               </Tree>
             </div>
+            {/* Code Editor */}
             <div className="flex-1 p-4 overflow-auto">
-              <h2 className="text-md font-semibold mb-2">{selectedFile}</h2>
+              <div className="flex flex-row items-center justify-between mb-2">
+                <h2 className="text-lg font-semibold">{selectedFile}</h2>
+                <ZipDownloadButton files={code} />
+              </div>
               <CodeEditor
                 key={selectedFile}
                 code={code[selectedFile] || "// No content"}
@@ -170,17 +153,15 @@ root.render(<App />);
               />
             </div>
           </div>
-        )}
-
-        {selectedTab === "preview" && (
-          <div className="w-full p-4">
-            {sandpackFiles["/src/index.jsx"] || sandpackFiles["/frontend.jsx"] ? (
-              <LiveSandpackPreview files={code} template="react" />
-            ) : (
-              <p className="text-gray-600">No frontend code to preview.</p>
-            )}
-          </div>
-        )}
+        </div>
+        {/* Preview Panel */}
+        <div className="w-1/2 p-4 overflow-auto bg-white bg-opacity-50 backdrop-blur-sm">
+          {sandpackFiles["/src/index.jsx"] || sandpackFiles["/frontend.jsx"] ? (
+            <LiveSandpackPreview files={code} template="react" />
+          ) : (
+            <p className="text-gray-600">No frontend code to preview.</p>
+          )}
+        </div>
       </div>
     </div>
   );
