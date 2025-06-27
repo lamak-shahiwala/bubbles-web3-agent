@@ -24,7 +24,7 @@ export default function LiveSandpackPreview({
       },
     ])
   );
-
+ try {
   return (
     <SandpackProvider
       template={template}
@@ -44,4 +44,13 @@ export default function LiveSandpackPreview({
       </SandpackLayout>
     </SandpackProvider>
   );
+ } catch (error) {
+    return (
+      <div className="p-4 text-red-600">
+        Live preview crashed due to invalid code!!<br />
+        Check your syntax and try again.
+      </div>
+    );
+  }
 }
+
