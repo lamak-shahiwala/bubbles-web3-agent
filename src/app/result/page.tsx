@@ -175,7 +175,7 @@ root.render(<App />);
         {selectedTab === "preview" && (
           <div className="w-full p-4">
             {sandpackFiles["/src/index.jsx"] || sandpackFiles["/frontend.jsx"] ? (
-              <LiveSandpackPreview files={sandpackFiles} template="react" />
+              <LiveSandpackPreview files={code} template="react" />
             ) : (
               <p className="text-gray-600">No frontend code to preview.</p>
             )}

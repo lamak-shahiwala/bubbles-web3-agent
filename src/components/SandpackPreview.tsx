@@ -30,9 +30,16 @@ export default function LiveSandpackPreview({
       template={template}
       files={sandpackFiles}
       options={{ autorun: true }}
+      customSetup={
+        {entry: "/src/index.jsx",
+        dependencies: {
+          "react": "^18.2.0",
+          "react-dom": "^18.2.0"
+        }
+        }
+      }
     >
       <SandpackLayout className="h-full border rounded">
-        <SandpackCodeEditor className="flex-1" showLineNumbers />
         <SandpackPreview className="flex-1 border-l" />
       </SandpackLayout>
     </SandpackProvider>
