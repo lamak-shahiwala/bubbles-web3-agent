@@ -37,7 +37,7 @@ export default function Home() {
     <div className="bg-[url('/images/bubbles.png')] bg-cover min-h-screen w-screen flex flex-col items-center px-4 sm:px-10 md:px-20 py-10 font-sans">
       <main className="flex flex-col items-center gap-8 flex-grow w-full">
         <Image
-          className="hover:scale-105 transition-transform h-32 w-32 sm:h-36 sm:w-36 md:h-48 md:w-48 lg:h-60 lg:w-60"
+          className="hover:scale-105 transition-transform h-[8rem] w-[8rem] sm:h-[9rem] sm:w-[9rem] md:[12rem] md:[12rem] lg:h-[12rem] lg:w-[12rem]"
           src="/images/bubbles_logo.png"
           alt="Bubbles logo"
           width={200}
