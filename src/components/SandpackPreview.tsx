@@ -19,7 +19,7 @@ export default function LiveSandpackPreview({
       path,
       {
         code,
-        active: path === "/src/index.js" || path === "/src/App.js",
+        active: path === "/src/index.tsx" || path === "/src/App.tsx",
       },
     ])
   );
@@ -30,7 +30,7 @@ export default function LiveSandpackPreview({
       files={sandpackFiles}
       options={{ autorun: true }}
       customSetup={
-        {entry: "/src/index.jsx",
+        {entry: "/src/index.tsx",
         dependencies: {
           "react": "^18.2.0",
           "react-dom": "^18.2.0"
