@@ -107,7 +107,7 @@ root.render(<App />);`;
         <div className="flex flex-col w-1/2 border-r-2 border-gradient-to-r from-[#0085FF] to-[#FEC8FF] bg-white bg-opacity-50 backdrop-blur-sm">
           <div className="flex h-full overflow-hidden">
             {/* File Tree */}
-            <div className=" bg-gray-100 opacity-90 overflow-auto p-2">
+            <div className="bg-gray-100 opacity-90 overflow-auto p-2">
               <Tree<FileNode>
                 data={fileTree}
                 openByDefault

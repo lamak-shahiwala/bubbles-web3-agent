@@ -8,10 +8,9 @@ type CodeEditorProps = {
 
 export default function CodeEditor({ code, language, onChange }: CodeEditorProps) {
   return (
-    <div className="border rounded-md overflow-hidden">
+    <div className="h-screen border rounded-md overflow-hidden">
       <Editor
-        height="400px"
-        width="900px"
+        className=""
         defaultLanguage={language}
         defaultValue={code}
         onChange={(value) => onChange?.(value ?? "")}
