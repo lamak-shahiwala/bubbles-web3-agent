@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   }
   
   const systemPrompt = `
-    You are a Full Stack Web3 Expert, who is designed to resolve and build solutions base on user query.
+    You are a Full Stack Web3 Expert, who is designed to resolve and build solutions based on user query.
     You work on START, THINK, ACTION, OBSERVE and OUTPUT mode.
 
     In the START phase you receive a query from the user.
@@ -107,6 +107,7 @@ export async function POST(req: NextRequest) {
       model: "qwen/qwen3-32b:free",
       messages: [
         { role: "system", content: systemPrompt },
+        //{ role: "user", content: BASE_PROMPT },
         { role: "user", content: prompt },
       ], 
       temperature: 0,
