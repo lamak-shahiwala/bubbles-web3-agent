@@ -1,7 +1,6 @@
 import {
   SandpackProvider,
   SandpackLayout,
-  SandpackCodeEditor,
   SandpackPreview,
   SandpackProviderProps,
 } from "@codesandbox/sandpack-react";
@@ -44,11 +43,12 @@ export default function LiveSandpackPreview({
       </SandpackLayout>
     </SandpackProvider>
   );
- } catch (error) {
+ } catch (z) {
     return (
       <div className="p-4 text-red-600">
         Live preview crashed due to invalid code!!<br />
-        Check your syntax and try again.
+        Check your syntax and try again.<br />
+        {"error: "+ z}
       </div>
     );
   }
