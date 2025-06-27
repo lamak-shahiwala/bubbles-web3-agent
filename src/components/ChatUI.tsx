@@ -21,9 +21,9 @@ export default function ChatUI({ onSubmit }: { onSubmit: (prompt: string) => voi
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-2 w-full">
+    <div className="flex flex-col md:flex-row gap-2 w-screen pl-[2rem] pr-[2rem] md:pl-[5rem] md:pr-[5rem] lg:pl-[20rem] lg:pr-[20rem] ">
     <div
-      className={`relative w-full md:w-[700px] lg:w-[800px] transition-all duration-300
+      className={`relative transition-all duration-300 w-full
         ${focused || prompt ? "h-[155px] md:h-[170px] lg:h-[170px]" : "h-[72px]"} 
         bg-blue-50 bg-opacity-75 rounded-lg p-4 md:p-6 flex flex-col justify-between shadow-md`}
     >

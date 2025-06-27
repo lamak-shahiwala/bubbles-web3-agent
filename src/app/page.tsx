@@ -47,7 +47,7 @@ export default function Home() {
         <h2 className="text-xl md:text-3xl font-bold text-gray-800 text-center">
           Generate your Web3 boilerplate in <span className="italic">minutes</span>.
         </h2>
-        <div className="w-full flex justify-center">
+        <div className="flex justify-center">
           {!isLoading && !showResult && (
           <div>
             <ChatUI onSubmit={generateCode} />
