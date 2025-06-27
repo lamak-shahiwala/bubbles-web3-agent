@@ -88,15 +88,15 @@ root.render(<App />);`;
   }, [code]);
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-r from-[#FEC8FF] to-[#0085FF]">
-      <div className="flex justify-between items-center p-4 bg-white bg-opacity-50 backdrop-blur-sm shadow-md">
-        <div className="flex text-2xl font-bold items-center flex-row">
+    <div className="h-screen flex flex-col bg-gradient-to-r from-[#0085FF] to-[#FEC8FF]">
+      <div className="flex justify-between border-b items-center p-4 bg-white bg-opacity-50 backdrop-blur-sm">
+        <div className="flex text-[1.75rem] font-bold items-center flex-row">
           <Image
           className="pr-2"
           src="/images/bubbles_logo.png"
           alt="Bubbles logo"
-          width={50}
-          height={50}
+          width={60}
+          height={60}
           priority
           />
           Web3 Project
@@ -135,7 +135,7 @@ root.render(<App />);`;
               </Tree>
             </div>
             {/* Code Editor */}
-            <div className="flex-1 p-4 overflow-auto">
+            <div className="flex-1 p-2 overflow-auto">
               <div className="flex flex-row items-center justify-between mb-2">
                 <h2 className="text-lg font-semibold">{selectedFile}</h2>
                 <ZipDownloadButton files={code} />
@@ -155,7 +155,7 @@ root.render(<App />);`;
           </div>
         </div>
         {/* Preview Panel */}
-        <div className="w-1/2 p-4 overflow-auto bg-white bg-opacity-50 backdrop-blur-sm">
+        <div className="w-1/2 p-2 overflow-auto bg-white bg-opacity-50 backdrop-blur-sm">
           {sandpackFiles["/src/index.jsx"] || sandpackFiles["/frontend.jsx"] ? (
             <LiveSandpackPreview files={code} template="react" />
           ) : (
