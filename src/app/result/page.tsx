@@ -5,6 +5,7 @@ import CodeEditor from "@/components/CodeEditor";
 import LiveSandpackPreview from "@/components/SandpackPreview";
 import ZipDownloadButton from "@/components/downloadZip";
 import Image from "next/image";
+import FollowUpChatUI from "@/components/FollowUpChatUI";
 
 type FileNode = {
   id: string;
@@ -87,6 +88,24 @@ root.render(<App />);`;
     return result;
   }, [code]);
 
+  const reGenerateCode = async (prompt: string) => {
+  try {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+
+    localStorage.setItem("generatedCode", JSON.stringify(data));
+
+  } catch (err) {
+    console.error("Error generating code:", err);
+  } finally {
+    //setIsLoading(false);
+  }
+};
+
   return (
     <div className="h-screen flex flex-col bg-gradient-to-r from-[#0085FF] to-[#FEC8FF]">
       <div className="flex justify-between border-b items-center p-4 bg-white bg-opacity-50 backdrop-blur-sm">
@@ -155,12 +174,17 @@ root.render(<App />);`;
           </div>
         </div>
         {/* Preview Panel */}
-        <div className="w-1/2 p-2 overflow-auto bg-white bg-opacity-50 backdrop-blur-sm">
+        <div className="flex flex-col w-1/2 p-2 overflow-auto bg-white bg-opacity-50 backdrop-blur-sm">
+          <div className="flex-1">
           {sandpackFiles["/src/index.jsx"] || sandpackFiles["/frontend.jsx"] ? (
             <LiveSandpackPreview files={code} template="react" />
           ) : (
             <p className="text-gray-600">No frontend code to preview.</p>
           )}
+          </div>
+          <div className="">
+            <FollowUpChatUI onSubmit={reGenerateCode} />
+          </div>
         </div>
       </div>
     </div>
