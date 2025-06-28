@@ -40,6 +40,7 @@ export default function ResultPage() {
   const [selectedFile, setSelectedFile] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // Load initial code from localStorage
   useEffect(() => {
     const stored = localStorage.getItem("generatedCode");
     if (stored) {
@@ -62,7 +63,6 @@ root.render(<App />);`;
       }
 
       setCode(parsed);
-
       const files = Object.keys(parsed);
       if (files.length > 0) {
         setSelectedFile(files[0]);
@@ -70,7 +70,14 @@ root.render(<App />);`;
     }
   }, []);
 
-  const fileTree = buildFileTree(code);
+  // Save code to localStorage on any update
+  useEffect(() => {
+    if (Object.keys(code).length > 0) {
+      localStorage.setItem("generatedCode", JSON.stringify(code));
+    }
+  }, [code]);
+
+  const fileTree = useMemo(() => buildFileTree(code), [code]);
 
   const detectLanguage = (file: string): string => {
     if (file.endsWith(".sol")) return "solidity";
@@ -81,50 +88,49 @@ root.render(<App />);`;
     return "plaintext";
   };
 
-  const sandpackFiles = useMemo(() => {
-    const result: { [key: string]: string } = {};
-    for (const path in code) {
-      result[path] = code[path];
-    }
-    return result;
-  }, [code]);
-
   const reGenerateCode = async (followUpPrompt: string) => {
-  setIsLoading(true);
-  try {
-    const res = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: followUpPrompt, currentCode: code, }),
-    });
-    const data = await res.json();
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: followUpPrompt, currentCode: code }),
+      });
+      const data = await res.json();
 
-    const merged = { ...code, ...data };
-    setCode(merged);
-  } catch (err) {
-    console.error("Error during generating followup code:", err);
-  } finally {
-    setIsLoading(false);
-  }
-};
+      const merged = { ...code, ...data };
+      setCode(merged);
+
+      // Update selected file if it was removed
+      if (!merged[selectedFile]) {
+        const firstFile = Object.keys(merged)[0];
+        if (firstFile) setSelectedFile(firstFile);
+      }
+    } catch (err) {
+      console.error("Error during generating followup code:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col bg-gradient-to-r from-[#0085FF] to-[#FEC8FF]">
       <div className="flex justify-between border-b items-center p-4 bg-white bg-opacity-50 backdrop-blur-sm">
         <div className="flex text-[1.75rem] font-bold items-center flex-row">
           <Image
-          className="pr-2"
-          src="/images/bubbles_logo.png"
-          alt="Bubbles logo"
-          width={60}
-          height={60}
-          priority
+            className="pr-2"
+            src="/images/bubbles_logo.png"
+            alt="Bubbles logo"
+            width={60}
+            height={60}
+            priority
           />
           Web3 Project
         </div>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
+        {/* Left: File Tree + Code Editor */}
         <div className="flex flex-col w-1/2 border-r-2 border-gradient-to-r from-[#0085FF] to-[#FEC8FF] bg-white bg-opacity-50 backdrop-blur-sm">
           <div className="flex h-full overflow-hidden">
             {/* File Tree */}
@@ -155,6 +161,7 @@ root.render(<App />);`;
                 )}
               </Tree>
             </div>
+
             {/* Code Editor */}
             <div className="flex-1 p-2 overflow-auto">
               <div className="flex flex-row items-center justify-between mb-2">
@@ -175,26 +182,29 @@ root.render(<App />);`;
             </div>
           </div>
         </div>
-        {/* Preview Panel */}
+
+        {/* Right: Preview + FollowUp */}
         <div className="flex flex-col w-1/2 p-2 overflow-auto bg-white bg-opacity-50 backdrop-blur-sm">
           <div className="flex-1">
-          {sandpackFiles["/src/index.jsx"] || sandpackFiles["/frontend.jsx"] ? (
-            <LiveSandpackPreview files={code} template="react" />
-          ) : (
-            <p className="text-gray-600">No frontend code to preview.</p>
-          )}
+            {code["/src/index.jsx"] || code["/frontend.jsx"] ? (
+              <LiveSandpackPreview files={code} template="react" />
+            ) : (
+              <p className="text-gray-600">No frontend code to preview.</p>
+            )}
           </div>
-          <div className="">
+          <div>
             <FollowUpChatUI onSubmit={reGenerateCode} />
           </div>
         </div>
       </div>
+
       {isLoading && (
-    <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
-      <div className="text-2xl text-gray-800 font-semibold animate-pulse">
-        🫧 Your website is being updated...
-      </div>
-    </div>)}
+        <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+          <div className="text-2xl text-gray-800 font-semibold animate-pulse">
+            🫧 Your website is being updated...
+          </div>
+        </div>
+      )}
     </div>
   );
 }
