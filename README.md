@@ -14,6 +14,7 @@ It allows user to generate a web3app boilerplate code for:
 - qwen3_32b generates the code in json format and returns it
 - the code is shown to the user on result page with monaco code editor
 - the live preview is shown using SandpackPreview (you can also use SandpackEditor to see live code changes)
+- user can give a follow up prompt to agent and get updated codebase
 - atlast user can download the project structure as a .zip
 
 ## Dependencies
@@ -43,7 +44,8 @@ It allows user to generate a web3app boilerplate code for:
 
 ## Future Plans
 
+- improve system prompt!!
 - deploying contracts to testnet
-- make the chat interface and database connection to store the change and let user improve his web3 app just by interacting with the agent "Bubbles"
+- database connection to store the change
 
 ## Thankyou for showing interest
