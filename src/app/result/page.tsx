@@ -38,6 +38,7 @@ function buildFileTree(files: { [key: string]: string }): FileNode[] {
 export default function ResultPage() {
   const [code, setCode] = useState<{ [key: string]: string }>({});
   const [selectedFile, setSelectedFile] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("generatedCode");
@@ -88,21 +89,22 @@ root.render(<App />);`;
     return result;
   }, [code]);
 
-  const reGenerateCode = async (prompt: string) => {
+  const reGenerateCode = async (followUpPrompt: string) => {
+  setIsLoading(true);
   try {
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({ prompt: followUpPrompt, currentCode: code, }),
     });
     const data = await res.json();
 
-    localStorage.setItem("generatedCode", JSON.stringify(data));
-
+    const merged = { ...code, ...data };
+    setCode(merged);
   } catch (err) {
-    console.error("Error generating code:", err);
+    console.error("Error during generating followup code:", err);
   } finally {
-    //setIsLoading(false);
+    setIsLoading(false);
   }
 };
 
@@ -187,6 +189,12 @@ root.render(<App />);`;
           </div>
         </div>
       </div>
+      {isLoading && (
+    <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+      <div className="text-2xl text-gray-800 font-semibold animate-pulse">
+        🫧 Your website is being updated...
+      </div>
+    </div>)}
     </div>
   );
 }
