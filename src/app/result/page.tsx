@@ -39,6 +39,7 @@ export default function ResultPage() {
   const [code, setCode] = useState<{ [key: string]: string }>({});
   const [selectedFile, setSelectedFile] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   // Load initial code from localStorage
   useEffect(() => {
@@ -70,7 +71,6 @@ root.render(<App />);`;
     }
   }, []);
 
-  // Save code to localStorage on any update
   useEffect(() => {
     if (Object.keys(code).length > 0) {
       localStorage.setItem("generatedCode", JSON.stringify(code));
@@ -88,6 +88,25 @@ root.render(<App />);`;
     return "plaintext";
   };
 
+  const deployToVercel = async () => {
+    setIsUpdating(true);
+    const res = await fetch("/api/deploy", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code }),
+    });
+    const data = await res.json();
+    setIsUpdating(false);
+
+    if (data.url) {
+      window.open(`https://${data.url}`, "_blank");
+    } else {
+      alert("Deployment failed. Check console.");
+      console.error(data.error);
+    }
+  };
+
+
   const reGenerateCode = async (followUpPrompt: string) => {
     setIsLoading(true);
     try {
@@ -101,7 +120,6 @@ root.render(<App />);`;
       const merged = { ...code, ...data };
       setCode(merged);
 
-      // Update selected file if it was removed
       if (!merged[selectedFile]) {
         const firstFile = Object.keys(merged)[0];
         if (firstFile) setSelectedFile(firstFile);
@@ -165,8 +183,13 @@ root.render(<App />);`;
             {/* Code Editor */}
             <div className="flex-1 p-2 overflow-auto">
               <div className="flex flex-row items-center justify-between mb-2">
-                <h2 className="text-lg font-semibold">{selectedFile}</h2>
+                <h2 className="flex-1 text-lg font-semibold">{selectedFile}</h2>
                 <ZipDownloadButton files={code} />
+                <button
+                onClick={deployToVercel}
+                className="flex flex-row items-center ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"> 
+                  Deploy
+                </button>
               </div>
               <CodeEditor
                 key={selectedFile}
@@ -183,7 +206,6 @@ root.render(<App />);`;
           </div>
         </div>
 
-        {/* Right: Preview + FollowUp */}
         <div className="flex flex-col w-1/2 p-2 overflow-auto bg-white bg-opacity-50 backdrop-blur-sm">
           <div className="flex-1">
             {code["/src/index.jsx"] || code["/frontend.jsx"] ? (
@@ -197,7 +219,13 @@ root.render(<App />);`;
           </div>
         </div>
       </div>
-
+      {isUpdating && (
+        <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+          <div className="text-2xl text-gray-800 font-semibold animate-pulse">
+            🚀 Your website is being Deployed...
+          </div>
+        </div>
+      )}
       {isLoading && (
         <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
           <div className="text-2xl text-gray-800 font-semibold animate-pulse">
