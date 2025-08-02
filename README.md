@@ -11,7 +11,7 @@ It allows user to generate a web3app boilerplate code for:
 ## How it works?
 
 - User enters prompt in natural language
-- qwen3_32b generates the code in json format and returns it
+- qwen/qwen3-235b-a22b generates the code in json format and returns it
 - the code is shown to the user on result page with monaco code editor
 - the live preview is shown using SandpackPreview (you can also use SandpackEditor to see live code changes)
 - user can give a follow up prompt to agent and get updated codebase
@@ -38,7 +38,7 @@ It allows user to generate a web3app boilerplate code for:
 - clone the project
 - run : npm install
 - make sure all the dependencies are there
-- create an qwen3_32b (free) api key from https://openrouter.ai/
+- create an qwen/qwen3-235b-a22b (free) api key from https://openrouter.ai/
 - create ".env.local" file on root folder and just create a variable OPENAI_API_KEY = {Your Key Here} or you can directly paste your key in route.ts file located at src\app\api\generate\route.ts
 - after performing above steps you are good to go just run: npm run dev
 
