@@ -54,7 +54,8 @@ Follow all formatting rules.
 
   try {
     const response = await openai.chat.completions.create({
-      model: "qwen/qwen3-30b-a3b:free",
+      model: "qwen/qwen-2.5-coder-32b-instruct",
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: fullPrompt },
