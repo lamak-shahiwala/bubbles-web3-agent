@@ -12,7 +12,7 @@ const openai = new OpenAI({
 
 function cleanJSONResponse(raw: string): string {
   try {
-    let cleaned = raw.replace(/```(?:json)?|```/g, "").trim();
+    const cleaned = raw.replace(/```(?:json)?|```/g, "").trim();
     
     const firstBrace = cleaned.indexOf("{");
     const lastBrace = cleaned.lastIndexOf("}");
@@ -61,14 +61,33 @@ export async function POST(req: NextRequest) {
       const parsed = JSON.parse(cleaned);
       return NextResponse.json(parsed);
     } catch (err) {
-      console.error("JSON Parse failure. Cleaned input was:", cleaned);
-      return NextResponse.json({ error: "Malformed JSON structure returned from AI", raw: cleaned }, { status: 500 });
-    }
+  console.error("JSON Parse failure:", err);
+  console.error("Cleaned input was:", cleaned);
 
-  } catch (err: any) {
-    console.error("API Route global error:", err);
-    return NextResponse.json({ 
-      error: err?.message || "Failed to execute generation request" 
-    }, { status: err?.status || 500 });
-  }
+  return NextResponse.json(
+    { error: "Malformed JSON structure returned from AI", raw: cleaned },
+    { status: 500 }
+  );
+}
+  } catch (err: unknown) {
+  console.error("API Route global error:", err);
+
+  const message =
+    err instanceof Error
+      ? err.message
+      : "Failed to execute generation request";
+
+  const status =
+    typeof err === "object" &&
+    err !== null &&
+    "status" in err &&
+    typeof (err as { status: unknown }).status === "number"
+      ? (err as { status: number }).status
+      : 500;
+
+  return NextResponse.json(
+    { error: message },
+    { status }
+  );
+}
 }
